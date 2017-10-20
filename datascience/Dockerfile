@@ -5,9 +5,9 @@ LABEL maintainer "Aquabiota Solutions AB <mapcloud@aquabiota.se>"
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-ENV SHELL=/bin/bash && \
-    CONDA_DIR=/home/aqua/conda/
-    PATH=/home/aqua/conda/bin:$PATH
+ENV SHELL=/bin/bash \
+    CONDA_DIR=/home/aqua/conda/ \
+    PATH=/home/aqua/conda/bin:$PATH  \
     JUPYTER_CONFIG_DIR=/home/aqua/.ipython/profile_default/
 # Environments for gdal to work
 ENV GDAL_DATA /home/aqua/conda/share/gdal/
