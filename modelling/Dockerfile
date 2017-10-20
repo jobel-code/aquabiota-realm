@@ -24,5 +24,5 @@ RUN chown -R $NB_USER:users $DATA_DIR && \
 RUN install2.r --error dismo biomod2
 
 # Making sure aqua is a sudoer
-RUN adduser $NB_USER sudo && \
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+# RUN adduser $NB_USER sudo && \
+#    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
