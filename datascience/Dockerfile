@@ -5,11 +5,10 @@ LABEL maintainer "Aquabiota Solutions AB <mapcloud@aquabiota.se>"
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-ENV SHELL /bin/bash
-
-ENV CONDA_DIR /home/aqua/conda/
-ENV PATH /home/aqua/conda/bin:$PATH
-ENV JUPYTER_CONFIG_DIR /home/aqua/.ipython/profile_default/
+ENV SHELL=/bin/bash && \
+    CONDA_DIR=/home/aqua/conda/
+    PATH=/home/aqua/conda/bin:$PATH
+    JUPYTER_CONFIG_DIR=/home/aqua/.ipython/profile_default/
 # Environments for gdal to work
 ENV GDAL_DATA /home/aqua/conda/share/gdal/
 # /home/aqua/conda/lib/python3.6/site-packages
@@ -45,22 +44,22 @@ RUN echo 'export PATH="/home/aqua/conda/bin:$PATH"' > /etc/profile.d/conda.sh
 RUN echo 'export PATH="/home/aqua/conda/bin:$PATH"' >> /home/aqua/.bashrc && \
     echo 'source /home/aqua/.bashrc'
 # amasing requirements
-RUN conda install -y bcrypt passlib
-RUN conda install -y -c conda-forge libgdal geopy folium rasterio \
+RUN conda install -y bcrypt passlib && \
+    conda install -y -c conda-forge libgdal geopy folium rasterio \
     ipyleaflet bqplot cmocean cartopy iris shapely pyproj \
-    fiona geopandas
-RUN conda update -y --all && conda clean -tipsy
+    fiona geopandas && \
+    conda update -y --all && conda clean -tipsy
 
 # installing jupyterlab from conda-forge
-RUN conda install -y -c conda-forge jupyterlab jupyterhub
-RUN jupyter nbextension enable vega --py --sys-prefix
+# RUN conda install -y -c conda-forge jupyterlab jupyterhub
+# RUN jupyter nbextension enable vega --py --sys-prefix
 # Enable ipywidgets in jupyterlab See https://github.com/jupyterlab/jupyterlab/issues/3050
 # RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
 # The following line will update all the conda packages to the latest version
 # using the conda-forge channel. When in production better to set up
 # directly with version numbers.
-RUN conda clean -tipsy
+# RUN conda clean -tipsy
 # CAREFULL when update as it will raise the following error when running geopandas
 # ImportError: /usr/lib/libgdal.so.20: undefined symbol: sqlite3_column_table_name
 # So, we make sure to downgrade fiona and upgrade gdal to solve the errors
@@ -98,7 +97,7 @@ RUN chown -R aqua:aqua /home/aqua/conda && \
     chown -R aqua:aqua /home/aqua/.bashrc && \
     echo 'source /home/aqua/.bashrc'
 
-## Currently no need to run it using jupyter notebook. 
+## Currently no need to run it using jupyter notebook.
 # RUN mkdir -p /etc/services.d/amasing \
 #    && echo '#!/bin/bash \
 #             \n jupyter notebook --ip='*' --port=8889  --no-browser' \
