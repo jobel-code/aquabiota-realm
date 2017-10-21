@@ -32,7 +32,7 @@ RUN apt-get update \
     texlive-humanities \
     texlive-latex-extra \
     texlive-science \
-    texlive.xetex \
+    texlive-xetex \
     texinfo \
     ## just because
     less \

@@ -82,10 +82,6 @@ RUN ipython profile create && echo $(ipython locate)
 # Ensure AMASING will find its packages
 COPY ipython_config.py /home/aqua/.ipython/profile_default/
 
-# directories to mount volumes
-RUN mkdir -p /home/aqua/git
-RUN mkdir -p /home/aqua/data
-
 USER root
 # Ensure access to $CONDA_DIR
 # Ensure writing access to user aqua to following dirs
@@ -106,7 +102,7 @@ RUN chown -R aqua:aqua /home/aqua/conda && \
 #             \n jupyter notebook stop 8889' \
 #             > /etc/services.d/amasing/finish
 
-EXPOSE 8889
+# EXPOSE 8889
 
 #RUN (echo "library(devtools)" && \
 #     echo "install_github(armstrtw/rzmq)" && \
