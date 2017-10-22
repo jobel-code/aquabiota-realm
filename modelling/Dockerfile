@@ -25,7 +25,7 @@ VOLUME /home/aqua/bookdown
 
 RUN chown -R aqua:aqua /home/aqua/data && \
     chown -R aqua:aqua $AQUABIOTA_GIT_DIR && \
-    chown -R aqua:aqua /home/aqua/.local
+    chown -R aqua:aqua /home/aqua/.local && \
     chown -R aqua:aqua /home/aqua/bookdown
 
 # Making sure aqua is a sudoer
