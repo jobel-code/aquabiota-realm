@@ -43,6 +43,8 @@ RUN rm /home/aqua/anaconda.sh && \
 RUN echo 'export PATH="/home/aqua/conda/bin:$PATH"' > /etc/profile.d/conda.sh
 RUN echo 'export PATH="/home/aqua/conda/bin:$PATH"' >> /home/aqua/.bashrc && \
     echo 'source /home/aqua/.bashrc'
+
+RUN conda remove -y spyder jupyter notebook
 # amasing requirements
 RUN conda install -y bcrypt passlib && \
     conda install -y -c conda-forge libgdal geopy folium rasterio \
@@ -73,7 +75,8 @@ RUN pip install s2sphere pyorient
 
 # make sure ipython will know where to find the git packages.
 # Install R packages
-RUN install2.r --error RCurl devtools repr IRdisplay evaluate crayon digest pbdZMQ
+RUN install2.r --error RCurl devtools repr  evaluate crayon digest  # \ 
+# pbdZMQ IRdisplay
 #
 # Source https://www.datacamp.com/community/blog/jupyter-notebook-r
 
