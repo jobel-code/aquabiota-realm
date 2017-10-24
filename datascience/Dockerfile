@@ -75,7 +75,7 @@ RUN pip install s2sphere pyorient
 
 # make sure ipython will know where to find the git packages.
 # Install R packages
-RUN install2.r --error RCurl devtools repr  evaluate crayon digest  # \
+RUN install2.r --error RCurl devtools repr  evaluate crayon digest
 # pbdZMQ IRdisplay
 #
 # Source https://www.datacamp.com/community/blog/jupyter-notebook-r
