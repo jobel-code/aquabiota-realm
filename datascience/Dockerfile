@@ -75,7 +75,7 @@ RUN pip install s2sphere pyorient
 
 # make sure ipython will know where to find the git packages.
 # Install R packages
-RUN install2.r --error RCurl devtools repr  evaluate crayon digest  # \ 
+RUN install2.r --error RCurl devtools repr  evaluate crayon digest  # \
 # pbdZMQ IRdisplay
 #
 # Source https://www.datacamp.com/community/blog/jupyter-notebook-r
@@ -90,11 +90,7 @@ USER root
 # Ensure writing access to user aqua to following dirs
 RUN chown -R aqua:aqua /home/aqua/conda && \
     chown -R aqua:aqua /home/aqua/.ipython && \
-    chown -R aqua:aqua /usr/local/lib/R/site-library && \
-    chown -R aqua:aqua /home/aqua/git && \
-    chown -R aqua:aqua /home/aqua/data && \
-    chown -R aqua:aqua /home/aqua/.bashrc && \
-    echo 'source /home/aqua/.bashrc'
+    chown -R aqua:aqua /usr/local/lib/R/site-library
 
 ## Currently no need to run it using jupyter notebook.
 # RUN mkdir -p /etc/services.d/amasing \
