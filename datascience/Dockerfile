@@ -49,7 +49,7 @@ RUN conda remove -y spyder jupyter notebook
 RUN conda install -y bcrypt passlib && \
     conda install -y -c conda-forge libgdal geopy folium rasterio \
     ipyleaflet bqplot cmocean cartopy iris shapely pyproj \
-    fiona geopandas xmltodict && \
+    fiona geopandas && \
     conda update -y --all && conda clean -tipsy
 
 # installing jupyterlab from conda-forge
@@ -71,7 +71,7 @@ RUN conda install -y bcrypt passlib && \
 # Installing pip requirements not available through conda
 # COPY pip-requirements.txt /tmp/
 # untangle useful to while dealing with xml see: https://github.com/stchris/untangle
-RUN pip install s2sphere pyorient untangle
+RUN pip install s2sphere pyorient
 #
 
 # make sure ipython will know where to find the git packages.
@@ -89,6 +89,9 @@ COPY ipython_config.py /home/aqua/.ipython/profile_default/
 USER root
 # Ensure access to $CONDA_DIR
 # Ensure writing access to user aqua to following dirs
+
+RUN conda install -c conda-forge xmltodict
+
 RUN chown -R aqua:aqua /home/aqua/conda && \
     chown -R aqua:aqua /home/aqua/.ipython && \
     chown -R aqua:aqua /usr/local/lib/R/site-library
