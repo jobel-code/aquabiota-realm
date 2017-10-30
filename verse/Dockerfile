@@ -56,7 +56,9 @@ RUN apt-get update \
   && install2.r -r http://rforge.net PKI \
   ## And some nice R packages for publishing-related stuff
   && install2.r --error --deps TRUE \
-    bookdown rticles rmdshower
+    bookdown rticles rmdshower webshot rocr flexdashboard DT
+# Required by webshot to detect HTML widgets
+RUN echo "Rscript -e 'webshot::install_phantomjs()'"
 
 ## Consider including:
 # - yihui/printr R package (when released to CRAN)

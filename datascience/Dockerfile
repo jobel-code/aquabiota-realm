@@ -15,7 +15,7 @@ ENV GDAL_DATA /home/aqua/conda/share/gdal/
 ENV GEOS_DIR /home/aqua/conda
 
 # Create aqua user with UID=1000 and in the 'users' group
-RUN mkdir -p /home/aqua/conda
+RUN mkdir -p /home/aqua/conda  && mkdir -p /home/aqua/git
 
 # Install not yet installed OS dependencies for fully functional notebook server
 RUN apt-get update --fix-missing && \
@@ -73,7 +73,6 @@ RUN conda install -y bcrypt passlib && \
 # untangle useful to while dealing with xml see: https://github.com/stchris/untangle
 RUN pip install s2sphere pyorient
 #
-
 # make sure ipython will know where to find the git packages.
 # Install R packages
 RUN install2.r --error RCurl devtools repr  evaluate crayon digest
@@ -90,9 +89,10 @@ USER root
 # Ensure access to $CONDA_DIR
 # Ensure writing access to user aqua to following dirs
 
-RUN conda install -c conda-forge xmltodict
+RUN conda install -y -c conda-forge xmltodict
 
 RUN chown -R aqua:aqua /home/aqua/conda && \
+    chown -R aqua:aqua /home/aqua/git && \
     chown -R aqua:aqua /home/aqua/.ipython && \
     chown -R aqua:aqua /usr/local/lib/R/site-library
 
@@ -104,8 +104,7 @@ RUN chown -R aqua:aqua /home/aqua/conda && \
 #    && echo '#!/bin/bash \
 #             \n jupyter notebook stop 8889' \
 #             > /etc/services.d/amasing/finish
-
-# EXPOSE 8889
+EXPOSE 8889 
 
 #RUN (echo "library(devtools)" && \
 #     echo "install_github(armstrtw/rzmq)" && \
