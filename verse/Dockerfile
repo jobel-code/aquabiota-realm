@@ -53,10 +53,10 @@ RUN apt-get update \
   && mktexlsr \
   && updmap-sys \
   ## Currently (2017-06-06) need devel PKI for ssl issue: https://github.com/s-u/PKI/issues/19
-  && install2.r -r http://rforge.net PKI \
+  && install2.r -r http://rforge.net PKI rocr \
   ## And some nice R packages for publishing-related stuff
   && install2.r --error --deps TRUE \
-    bookdown rticles rmdshower webshot rocr flexdashboard DT
+    bookdown rticles rmdshower webshot flexdashboard DT
 # Required by webshot to detect HTML widgets
 RUN echo "Rscript -e 'webshot::install_phantomjs()'"
 
