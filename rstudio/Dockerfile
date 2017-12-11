@@ -31,7 +31,6 @@ RUN apt-get update \
   && wget -q http://download2.rstudio.org/rstudio-server-${RSTUDIO_VERSION}-amd64.deb \
   && dpkg -i rstudio-server-${RSTUDIO_VERSION}-amd64.deb \
   && rm rstudio-server-*-amd64.deb \
-  ## Symlink pandoc & standard pandoc templates for use system-wide
   && ln -s /usr/lib/rstudio-server/bin/pandoc/pandoc /usr/local/bin \
   && ln -s /usr/lib/rstudio-server/bin/pandoc/pandoc-citeproc /usr/local/bin \
   && wget https://github.com/jgm/pandoc-templates/archive/${PANDOC_TEMPLATES_VERSION}.tar.gz \
@@ -41,9 +40,7 @@ RUN apt-get update \
   && rm ${PANDOC_TEMPLATES_VERSION}.tar.gz \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/ \
-  ## RStudio wants an /etc/R, will populate from $R_HOME/etc
   && mkdir -p /etc/R \
-  ## Write config files in $R_HOME/etc
   && echo '\n\
     \n# Configure httr to perform out-of-band authentication if HTTR_LOCALHOST \
     \n# is not set since a redirect to localhost may not work depending upon \
@@ -52,20 +49,15 @@ RUN apt-get update \
     \n  options(httr_oob_default = TRUE) \
     \n}' >> /usr/local/lib/R/etc/Rprofile.site \
   && echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron \
-  ## Need to configure non-root user for RStudio
   && useradd aqua \
   && echo "aqua:aqua" | chpasswd \
 	&& mkdir /home/aqua \
 	&& chown aqua:aqua /home/aqua \
 	&& addgroup aqua staff \
-  ## Prevent rstudio from deciding to use /usr/bin/R if a user apt-get installs a package
   &&  echo 'rsession-which-r=/usr/local/bin/R' >> /etc/rstudio/rserver.conf \
-  ## use more robust file locking to avoid errors when using shared volumes:
   && echo 'lock-type=advisory' >> /etc/rstudio/file-locks \
-  ## configure git not to request password each time
   && git config --system credential.helper 'cache --timeout=3600' \
   && git config --system push.default simple \
-  ## Set up S6 init system
   && wget -P /tmp/ https://github.com/just-containers/s6-overlay/releases/download/v1.11.0.1/s6-overlay-amd64.tar.gz \
   && tar xzf /tmp/s6-overlay-amd64.tar.gz -C / \
   && mkdir -p /etc/services.d/rstudio \

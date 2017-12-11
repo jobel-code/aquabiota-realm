@@ -45,5 +45,4 @@ RUN apt-get update \
     spdep \
     geoR \
     geosphere \
-    ## from bioconductor
     && R -e "BiocInstaller::biocLite('rhdf5')"
