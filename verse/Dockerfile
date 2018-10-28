@@ -1,51 +1,71 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 FROM aquabiota/realm-tidyverse:latest
-
+# Modified from: https://github.com/rocker-org/rocker-versioned/blob/master/verse/3.5.1/Dockerfile
+# Previous realm:  aquabiota/realm-tidyverse
+# docker build -t aquabiota/realm-verse .
+# Next to follow: aquabiota/realm-geospatial:latest
+ENV PATH=$PATH:/opt/TinyTeX/bin/x86_64-linux/
 ## Add LaTeX, rticles and bookdown support
-RUN apt-get update \
+RUN wget "https://travis-bin.yihui.name/texlive-local.deb" \
+  && dpkg -i texlive-local.deb \
+  && rm texlive-local.deb \
+  && apt-get update \
   && apt-get install -y --no-install-recommends \
+    ## for rJava
     default-jdk \
+    ## Nice Google fonts
+    fonts-roboto \
+    ## used by some base R plots
     ghostscript \
+    ## used to build rJava and other packages
     libbz2-dev \
     libicu-dev \
     liblzma-dev \
+    ## system dependency of hunspell (devtools)
     libhunspell-dev \
+    ## system dependency of hadley/pkgdown
     libmagick++-dev \
+    ## rdf, for redland / linked data
     librdf0-dev \
+    ## for V8-based javascript wrappers
     libv8-dev \
+    ## R CMD Check wants qpdf to check pdf sizes, or throws a Warning
     qpdf \
-    ssh \
-    lmodern \
-    texlive-fonts-recommended \
-    texlive-generic-recommended \
-    texlive-humanities \
-    texlive-latex-extra \
-    texlive-science \
-    texlive-xetex \
+    ## For building PDF manuals
     texinfo \
+    ## for git via ssh key
+    ssh \
+ ## just because
     less \
     vim \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/ \
-  && cd /usr/share/texlive/texmf-dist/tex/latex \
-  && wget http://mirrors.ctan.org/macros/latex/contrib/ametsoc.zip \
-  && unzip ametsoc.zip \
-  && rm *.zip \
-  && cd /usr/share/texlive/texmf-dist \
-  && wget http://mirrors.ctan.org/install/fonts/inconsolata.tds.zip \
-  && unzip inconsolata.tds.zip \
-  && rm *.zip \
-  && echo "Map zi4.map" >> /usr/share/texlive/texmf-dist/web2c/updmap.cfg \
-  && mktexlsr \
-  && updmap-sys \
-  && install2.r -r http://rforge.net PKI rocr \
+  ## Use tinytex for LaTeX installation
+  && install2.r --error tinytex \
+  ## Admin-based install of TinyTeX:
+  && wget -qO- \
+    "https://github.com/yihui/tinytex/raw/master/tools/install-unx.sh" | \
+    sh -s - --admin --no-path \
+  && mv ~/.TinyTeX /opt/TinyTeX \
+  && /opt/TinyTeX/bin/*/tlmgr path add \
+  && tlmgr install metafont mfware inconsolata tex ae parskip listings \
+  && tlmgr path add \
+  && Rscript -e "tinytex::r_texmf()" \
+  && chown -R root:staff /opt/TinyTeX \
+  && chmod -R g+w /opt/TinyTeX \
+  && chmod -R g+wx /opt/TinyTeX/bin \
+  && echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron \
+  && install2.r --error PKI \
+  ## And some nice R packages for publishing-related stuff
   && install2.r --error --deps TRUE \
-    bookdown rticles rmdshower webshot flexdashboard DT
-# Required by webshot to detect HTML widgets
-RUN echo "Rscript -e 'webshot::install_phantomjs()'"
-
+    bookdown rticles rmdshower
+    #webshot
+#
 ## Consider including:
 # - yihui/printr R package (when released to CRAN)
 # - libgsl0-dev (GSL math library dependencies)
-# - librdf0-dev
+
+
+# Required by webshot to detect HTML widgets
+# RUN echo "Rscript -e 'webshot::install_phantomjs()'"

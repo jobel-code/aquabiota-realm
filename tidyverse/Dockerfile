@@ -2,23 +2,29 @@
 # vi: set ft=ruby :
 FROM aquabiota/realm-rstudio:latest
 
+# Previous realm:  aquabiota/realm-rstudio
+# docker build -t aquabiota/realm-tidyverse .
+# Next to follow: aquabiota/realm-verse:latest
+
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libxml2-dev \
   libcairo2-dev \
-  libsqlite-dev \
+  libsqlite3-dev \
   libmariadbd-dev \
   libmariadb-client-lgpl-dev \
   libpq-dev \
   libssh2-1-dev \
-  && R -e "source('https://bioconductor.org/biocLite.R')" \
+  unixodbc-dev \
   && install2.r --error \
     --deps TRUE \
     tidyverse \
     dplyr \
-    ggplot2 \
     devtools \
     formatR \
-    remotes
+    remotes \
+    selectr \
+    caTools \
+    BiocManager
 
 ## Notes: Above install2.r uses --deps TRUE to get Suggests dependencies as well,
 ## dplyr and ggplot are already part of tidyverse, but listed explicitly to get their (many) suggested dependencies.

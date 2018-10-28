@@ -9,6 +9,33 @@ ROOT=${ROOT:=FALSE}
 UMASK=${UMASK:=022}
 
 
+## Make sure RStudio inherits the full path
+echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron
+
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+if [[ ${DISABLE_AUTH,,} == "true" ]]
+then
+	mv /etc/rstudio/disable_auth_rserver.conf /etc/rstudio/rserver.conf
+	echo "USER=$USER" >> /etc/environment
+fi
+
+if grep --quiet "auth-none=1" /etc/rstudio/rserver.conf
+then
+	echo "Skipping authentication as requested"
+elif [ "$PASSWORD" == "aquabiota" ]
+then
+    printf "\n\n"
+    tput bold
+    printf "\e[31mERROR\e[39m: You must set a unique PASSWORD (not 'aquabiota') first! e.g. run with:\n"
+    printf "docker run -e PASSWORD=\e[92m<YOUR_PASS>\e[39m -p 8787:8787 aquabiota/realm-rstudio:latest\n"
+    tput sgr0
+    printf "\n\n"
+    exit 1
+fi
+
+
 if [ "$USERID" -lt 1000 ]
 # Probably a macOS user, https://github.com/rocker-org/rocker/issues/205
   then

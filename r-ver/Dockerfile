@@ -1,5 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+# Previous realm: none.
+# docker build -t aquabiota/realm-r-ver .
+# Next to Follow: aquabiota/realm-rstudio:latest
 FROM debian:stretch
 # original source: https://github.com/rocker-org/rocker-versioned/blob/master/r-ver/devel/Dockerfile
 LABEL org.label-schema.license="GPL-2.0" \
@@ -11,6 +14,7 @@ ARG BUILD_DATE
 RUN apt-get update && apt-get install -y locales sudo && rm -rf /var/lib/apt/lists/* \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
+#[2018-10-26]
 ENV R_VERSION=${R_VERSION:-3.4.1} \
     LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
@@ -24,14 +28,25 @@ ENV R_VERSION=${R_VERSION:-3.4.1} \
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
+    build-essential \
     bash-completion \
     ca-certificates \
     ccache \
+    curl \
+    ed \
     file \
     fonts-texgyre \
+    fonts-dejavu \
+    git \
     g++ \
+    gcc \
     gfortran \
     gsfonts \
+    less \
+    libatlas-base-dev \
+    liblapack-dev \
+    libblas-dev \
+    libfreetype6-dev \
     libbz2-1.0 \
     libcurl3 \
     libicu57 \
@@ -43,9 +58,23 @@ RUN apt-get update \
     libreadline7 \
     libtiff5 \
     liblzma5 \
+    libxft-dev \
+    libsnappy-dev \
+    libpng-dev \
+    libssl-dev \
+    libcurl4-gnutls-dev \
+    libxml2-dev \
     locales \
     make \
+    openssh-client \
+    pkg-config \
+    python-zmq \
+    python-dev \
+    python-setuptools \
+    tzdata \
     unzip \
+    vim-tiny \
+    wget\
     zip \
     zlib1g \
   && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
@@ -67,6 +96,7 @@ RUN apt-get update \
     libx11-dev \
     libxt-dev \
     perl \
+    rsync \
     subversion tcl8.6-dev \
     tk8.6-dev \
     texinfo \
@@ -99,6 +129,7 @@ RUN apt-get update \
                --enable-memory-profiling \
                --with-readline \
                --with-blas="-lopenblas" \
+               --with-tcltk \
                --disable-nls \
                --without-recommended-packages \
   && make \
@@ -107,12 +138,15 @@ RUN apt-get update \
   && mkdir -p /usr/local/lib/R/site-library \
   && chown root:staff /usr/local/lib/R/site-library \
   && chmod g+wx /usr/local/lib/R/site-library \
+  ## Fix library path
   && echo "R_LIBS_USER='/usr/local/lib/R/site-library'" >> /usr/local/lib/R/etc/Renviron \
   && echo "R_LIBS=\${R_LIBS-'/usr/local/lib/R/site-library:/usr/local/lib/R/library:/usr/lib/R/library'}" >> /usr/local/lib/R/etc/Renviron \
   && [ -z "$BUILD_DATE" ] && BUILD_DATE=$(TZ="Europe/Stockholm" date -I) || true \
   && MRAN=https://mran.microsoft.com/snapshot/${BUILD_DATE} \
   && echo MRAN=$MRAN >> /etc/environment \
   && export MRAN=$MRAN \
+  ## MRAN becomes default only in versioned images
+  ## Use littler installation scripts
   && Rscript -e "install.packages(c('littler', 'docopt'), repo = '$MRAN')" \
   && ln -s /usr/local/lib/R/site-library/littler/examples/install2.r /usr/local/bin/install2.r \
   && ln -s /usr/local/lib/R/site-library/littler/examples/installGithub.r /usr/local/bin/installGithub.r \

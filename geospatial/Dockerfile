@@ -3,46 +3,63 @@
 FROM aquabiota/realm-verse:latest
 # Credits: https://github.com/rocker-org/geospatial/blob/master/devel/Dockerfile
 #          maintainer="Carl Boettiger <cboettig@ropensci.org>"
+
+# Previous realm:  aquabiota/realm-verse
+# docker build -t aquabiota/realm-geospatial .
+# Next to follow: aquabiota/realm-modelling
 LABEL maintainer "Aquabiota Solutions AB <mapcloud@aquabiota.se>"
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-    lbzip2 \
-    libfftw3-dev \
-    libgdal-dev \
-    libgeos-dev \
-    libgsl0-dev \
-    libgl1-mesa-dev \
-    libglu1-mesa-dev \
-    libhdf4-alt-dev \
-    libhdf5-dev \
-    liblwgeom-dev \
-    libproj-dev \
-    libnetcdf-dev \
-    libsqlite3-dev \
-    libssl-dev \
-    libudunits2-dev \
-    tk-dev \
-    unixodbc-dev \
-  && install2.r --error \
+  lbzip2 \
+  libfftw3-dev \
+  libgdal-dev \
+  libgeos-dev \
+  libgsl0-dev \
+  libgl1-mesa-dev \
+  libglu1-mesa-dev \
+  libhdf4-alt-dev \
+  libhdf5-dev \
+  libjq-dev \
+  liblwgeom-dev \
+  libproj-dev \
+  libprotobuf-dev \
+  libnetcdf-dev \
+  libsqlite3-dev \
+  libssl-dev \
+  libudunits2-dev \
+  netcdf-bin \
+  protobuf-compiler \
+  tk-dev \
+  unixodbc-dev
+
+#RUN install2.r --error -d TRUE \
+#    rgeos
+
+RUN install2.r --error \
     RColorBrewer \
     RandomFields \
+    RNetCDF \
     classInt \
     deldir \
     gstat \
-    lidR \
     mapdata \
     maptools \
     mapview \
+    ncdf4 \
     proj4 \
-    raster \
-    rgdal \
-    rgeos \
-    rlas \
-    sf \
-    sp \
-    spacetime \
-    spatstat \
-    spdep \
-    geoR \
-    geosphere \
-    && R -e "BiocInstaller::biocLite('rhdf5')"
+    raster
+
+RUN install2.r -d TRUE rgdal
+RUN Rscript -e 'install.packages("rgeos", repos="http://R-Forge.R-project.org")'
+RUN install2.r --error \
+  lidR \
+  rlas \
+  sf \
+  sp \
+  spacetime \
+  spatstat \
+  spdep \
+  geoR \
+  geosphere
+
+#  && Rscript -e "BiocInstaller::biocLite('rhdf5')"

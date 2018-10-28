@@ -2,6 +2,11 @@
 # vi: set ft=ruby :
 FROM aquabiota/realm-geospatial:latest
 LABEL maintainer "Aquabiota Solutions AB <mapcloud@aquabiota.se>"
+
+# Previous realm:  aquabiota/realm-geospatial
+# docker build -t aquabiota/realm-modelling .
+# Next to follow: aquabiota/realm-datascience
+
 # See aquabiota/realm-r-ver:latest for ENV variables
 # And aquabiota/realm-rstudio:latest  for adding new users and
 # Ensure workspace belongs to user
@@ -9,7 +14,7 @@ LABEL maintainer "Aquabiota Solutions AB <mapcloud@aquabiota.se>"
 RUN mkdir -p /home/aqua/.local
 RUN chown -R aqua:aqua /home/aqua/.local
 
-RUN install2.r --error dismo biomod2
+RUN install2.r --error  dismo biomod2
 
 
 
