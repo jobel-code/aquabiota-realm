@@ -4,7 +4,7 @@ FROM aquabiota/realm-modelling:latest
 
 # Previous realm:  aquabiota/realm-geospatial
 # docker build -t aquabiota/realm-datascience .
-# Next to follow: none
+# Next to follow: aquabiota/realm-cloud
 
 LABEL maintainer "Aquabiota Solutions AB <mapcloud@aquabiota.se>"
 
@@ -199,6 +199,10 @@ RUN chown -R aqua:aqua /home/aqua/conda && \
 #             \n jupyter notebook stop 8889' \
 #             > /etc/services.d/amasing/finish
 EXPOSE 8889
+
+RUN install2.r --error \
+  --deps TRUE DT
+
 
 USER aqua
 #RUN (echo "library(devtools)" && \
