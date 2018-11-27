@@ -32,7 +32,11 @@ RUN apt-get update --fix-missing && \
     pandoc \
     python-dev \
     p7zip-full \
-    software-properties-common
+    software-properties-common \
+    # supports exporting notebooks to PDF
+    textlive-xetex
+
+
 
 RUN echo 'export PATH=/home/aqua/conda/bin:$PATH' > /etc/profile.d/conda.sh
 
@@ -52,9 +56,12 @@ RUN  wget --quiet -O ~/miniconda.sh \
         ~/miniconda.sh -b -f -p /home/aqua/conda && \
         rm ~/miniconda.sh && \
         conda update conda --quiet --yes && \
-        conda config --system --append channels conda-forge && \
         conda config --system --append channels IOOS && \
+        conda config --system --append channels bioconda && \
         conda config --system --append channels r && \
+        conda config --system --append channels conda-forge && \
+
+
         conda config --system --set show_channel_urls true && \
         conda config --system --set auto_update_conda false && \
         conda update --all --quiet --yes && \
@@ -205,15 +212,3 @@ RUN install2.r --error \
 
 
 USER aqua
-#RUN (echo "library(devtools)" && \
-#     echo "install_github(armstrtw/rzmq)" && \
-#     echo "install_github(IRkernel/repr)" && \
-#     echo "install_github(IRkernel/IRkernel)" && \
-#     echo "IRkernel::installspec(user = FALSE)" ) \
-#    | Rscript -e "source(file('stdin'))"
-
-
-# COPY rpackages.R /home/aqua/rpackages.R
-# RUN echo "source /home/aqua/rpackages.R"
-
-# CMD ["/init"]
