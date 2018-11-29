@@ -77,6 +77,8 @@ RUN  wget --quiet -O ~/miniconda.sh \
                 jinja2 \
                 jsonschema \
                 jupyterlab \
+                # Required by google-cloud-firestore
+                markdown \
                 matplotlib \
                 mock \
                 nltk \
@@ -105,8 +107,10 @@ RUN  wget --quiet -O ~/miniconda.sh \
                 sympy \
                 tornado \
                 widgetsnbextension \
+                xlrd \
                 xgboost
-        # Install Python3 packages that aren't available or up-to-date in Conda.
+
+# Install Python3 packages that aren't available or up-to-date in Conda.
 RUN  pip install --quiet -U --upgrade-strategy only-if-needed --no-cache-dir \
                 bs4 \
                 ggplot \
@@ -115,6 +119,9 @@ RUN  pip install --quiet -U --upgrade-strategy only-if-needed --no-cache-dir \
                 protobuf \
                 tensorflow \
                 s2sphere
+
+# Added to handle cloud firebase and cloud firestore
+RUN pip install --quiet -U --upgrade-strategy only-if-needed firebase-admin && pip install --quiet -U --upgrade-strategy only-if-needed google-cloud-firestore
 
 # Careful gdal has conflicts with fiona and rasterio
 RUN conda install --quiet -c conda-forge --yes gdal && \
