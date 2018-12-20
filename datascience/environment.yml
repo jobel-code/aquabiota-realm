@@ -1,0 +1,179 @@
+# SEE: https://github.com/geopandas/geopandas/issues/237
+# conda config --remove channels defaults
+# conda config --add channels conda-forge
+# ##########################################
+# conda create -n py36 -c conda-forge python=3.6 geopandas
+# or
+# conda env create environment.yml
+###############################################
+# jupyter labextension install @jupyterlab/hub-extension@^0.12.0
+## Activate ipywidgets extension in the environment that runs the notebook server
+#    jupyter nbextension enable --py widgetsnbextension --sys-prefix &&
+#    # Also activate ipywidgets extension for JupyterLab
+#   # Check this URL for most recent compatibilities
+#    # https://github.com/jupyter-widgets/ipywidgets/tree/master/packages/jupyterlab-manager
+#    jupyter labextension install @jupyter-widgets/jupyterlab-manager@^0.38.1 &&
+#    jupyter labextension install jupyterlab_bokeh@0.6.3 &&
+
+name: amasing
+channels:
+#  - r
+#  - ioos
+  - conda-forge
+dependencies:
+  - python=3.6
+  # original for amasing
+  - gdal
+  - crcmod
+  - dask
+  - dill
+  - google-api-python-client
+  - httplib2
+  - h5py
+  - ipykernel
+  - ipywidgets
+  - jinja2
+  - jsonschema
+  - jupyterlab
+  - jupyter_contrib_nbextensions
+  # 20181220 Required to fix geopandas -fiona errors
+  - libiconv
+  # Required by google-cloud-firestore
+  - markdown
+  - matplotlib
+  - mock
+  - nltk
+  - notebook
+  - numpy
+  - oauth2client
+  - pandas-gbq
+  - pandas
+  - pandocfilters
+  - pillow
+  - pip
+  - plotly
+  - psutil
+  - pygments
+  - pyproj
+  - python-dateutil
+  - python-snappy
+  - pytz
+  - pyzmq
+  - requests
+  - scikit-image
+  - scikit-learn
+  - scipy
+  - seaborn
+  - six
+  - statsmodels
+  - sympy
+  - tornado
+  - widgetsnbextension
+  - xlrd
+  # 20181220 Required to fix geopandas, fiona gdal problems
+  - lxml
+  - xgboost
+  #######################
+  - geopandas
+  - scipy-sugar
+  - tinydb
+  - bcrypt
+  - passlib
+  - libgdal
+  - geopy
+  - folium
+  - rasterio
+  - ipyleaflet
+  - bqplot
+  - cmocean
+  - cartopy
+  - iris
+  - shapely
+  - pyproj
+  - xmltodict
+  # https://github.com/ocefpaf/GCOOS_meeting/blob/master/environment.yml
+  - jinja2
+  - markupsafe
+  - pyyaml
+  - pygments
+  - unidecode
+  - blinker
+  - docutils
+  - feedgenerator
+  - pytz
+  - pyzmq
+  - six
+  - tornado
+  - cartopy
+  - folium
+  - mpld3
+  - numpy
+  - oceans
+  - pandas
+  - pillow
+  - scipy
+  - vincent
+  - sympy
+  - numpy
+  - matplotlib
+  - xlrd
+  - gsw
+  - ctd
+  - oceans
+  - ephem
+  - statsmodels
+  - jsanimation
+  - folium
+  - windspharm
+  - palettable
+  - simplekml
+  - xarray
+  - mplleaflet
+  - geopandas
+  - mpld3
+  - bokeh
+  - numba
+  - 'conda-forge::blas=*=openblas'
+  - 'ipywidgets=7.2*'
+  - 'numexpr=2.6*'
+  - 'scikit-learn=0.20*'
+  - 'scikit-image=0.14*'
+  - 'cython=0.28*'
+  - 'patsy=0.5*'
+  - 'statsmodels=0.9*'
+  - 'cloudpickle=0.5*'
+  - 'dill=0.2*'
+  - 'numba=0.38*'
+  - 'bokeh=0.13*'
+  - 'sqlalchemy=1.2*'
+  - 'hdf5=1.10*'
+  - 'h5py=2.7*'
+  - 'vincent=0.4.*'
+  - 'beautifulsoup4=4.6.*'
+  - 'protobuf=3.*'
+  - 'xlrd'
+  - 'pyarrow'
+  # https://github.com/jupyter/docker-stacks/blob/master/tensorflow-notebook/Dockerfile
+  - 'tensorflow=1.11*'
+  - 'keras=2.2*'
+  # R- https://github.com/jupyter/docker-stacks/blob/master/datascience-notebook/Dockerfile
+  #- 'rpy2=2.8*'
+  #- 'r-base=3.4.1'
+  #- 'r-irkernel=0.8*'
+  #- 'r-plyr=1.8*'
+  #- 'r-devtools=1.13*'
+  #- 'r-tidyverse=1.1*'
+  #- 'r-shiny=1.0*'
+  #- 'r-rmarkdown=1.8*'
+  #- 'r-forecast=8.2*'
+  #- 'r-rsqlite=2.0*'
+  #- 'r-reshape2=1.4*'
+  #- 'r-nycflights13=0.2*'
+  #- 'r-caret=6.0*'
+  #- 'r-rcurl=1.95*'
+  #- 'r-crayon=1.3*'
+  #- 'r-randomforest=4.6*'
+  #- 'r-htmltools=0.3*'
+  #- 'r-sparklyr=0.7*'
+  #- 'r-htmlwidgets=1.0*'
+  #- 'r-hexbin=1.27*'

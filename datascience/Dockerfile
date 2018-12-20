@@ -32,9 +32,9 @@ RUN apt-get update --fix-missing && \
     pandoc \
     python-dev \
     p7zip-full \
-    software-properties-common \
+    software-properties-common
     # supports exporting notebooks to PDF
-    textlive-xetex
+    #texlive-xetex
 
 
 
@@ -77,6 +77,9 @@ RUN  wget --quiet -O ~/miniconda.sh \
                 jinja2 \
                 jsonschema \
                 jupyterlab \
+                jupyter_contrib_nbextensions \
+                # 20181220 Required to fix geopandas -fiona errors
+                libiconv \
                 # Required by google-cloud-firestore
                 markdown \
                 matplotlib \
@@ -93,6 +96,7 @@ RUN  wget --quiet -O ~/miniconda.sh \
                 plotly \
                 psutil \
                 pygments \
+                pyproj\
                 python-dateutil \
                 python-snappy \
                 pytz \
@@ -108,16 +112,15 @@ RUN  wget --quiet -O ~/miniconda.sh \
                 tornado \
                 widgetsnbextension \
                 xlrd \
+                # 20181220 Required to fix geopandas, fiona gdal problems
+                lxml \
                 xgboost
 
 # Install Python3 packages that aren't available or up-to-date in Conda.
 RUN  pip install --quiet -U --upgrade-strategy only-if-needed --no-cache-dir \
                 bs4 \
                 ggplot \
-                google-cloud-monitoring \
                 lime \
-                protobuf \
-                tensorflow \
                 s2sphere
 
 # Added to handle cloud firebase and cloud firestore

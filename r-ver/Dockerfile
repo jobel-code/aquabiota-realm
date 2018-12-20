@@ -49,8 +49,6 @@ RUN apt-get update \
     libfreetype6-dev \
     libbz2-1.0 \
     libcurl3 \
-    libicu57 \
-    libjpeg62-turbo \
     libopenblas-dev \
     libpangocairo-1.0-0 \
     libpcre3 \
@@ -77,6 +75,9 @@ RUN apt-get update \
     wget\
     zip \
     zlib1g \
+    # not longer available
+    libjpeg62-turbo \
+    libicu57 \
   && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
   && locale-gen en_US.utf8 \
   && /usr/sbin/update-locale LANG=$LANG LC_ALL=$LC_ALL LANGUAGE=$LANGUAGE \
